@@ -1,28 +1,20 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func lengthOfLongestSubstring(s string) int {
-	var (
-		ans   int
-		start int = 1
-	)
-	mapS := make(map[rune]int)
+	inds := make(map[rune]int)
+	j, length := 0, 0
 
-	for ind, val := range s {
-		oldInd := mapS[val]
-		if oldInd != 0 && oldInd >= start {
-			ans = maximum(ans, ind+1-start)
-			start = oldInd + 1
+	for i, val := range s {
+		if ind, ok := inds[val]; ok && ind >= j {
+			length = maximum(length, i-j)
+			j = ind + 1
 		}
-		mapS[val] = ind + 1
+		inds[val] = i
 	}
 
-	ans = maximum(ans, len(s)+1-start)
-
-	return ans
+	return maximum(length, len(s)-j)
 }
 
 func maximum(a, b int) int {
@@ -33,6 +25,6 @@ func maximum(a, b int) int {
 }
 
 func main() {
-	s := "abcabcbb"
+	s := "abba"
 	fmt.Println(lengthOfLongestSubstring(s))
 }
