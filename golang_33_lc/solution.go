@@ -7,27 +7,24 @@ func search(nums []int, target int) int {
 
 	for left < right {
 		mid := (left + right) / 2
-		midVal := nums[mid]
-		if midVal == target {
+		if nums[mid] == target {
 			return mid
 		}
 
-		leftVal := nums[left]
-		rightVal := nums[right]
-		if leftVal < rightVal {
-			if midVal > target {
+		if nums[left] < nums[right] {
+			if nums[mid] > target {
 				right = mid - 1
 			} else {
 				left = mid + 1
 			}
-		} else if midVal >= leftVal {
-			if midVal > target && target >= leftVal {
+		} else if nums[mid] >= nums[left] {
+			if nums[mid] > target && target >= nums[left] {
 				right = mid - 1
 			} else {
 				left = mid + 1
 			}
 		} else {
-			if midVal < target && target <= rightVal {
+			if nums[mid] < target && target <= nums[right] {
 				left = mid + 1
 			} else {
 				right = mid - 1
@@ -50,3 +47,42 @@ func main() {
 	target1 := 1
 	fmt.Println(search(nums1, target1))
 }
+
+// func search(nums []int, target int) int {
+// 	left, right := 0, len(nums)-1
+
+// 	for left < right {
+// 		mid := (left + right) / 2
+// 		midVal := nums[mid]
+// 		if midVal == target {
+// 			return mid
+// 		}
+
+// 		leftVal := nums[left]
+// 		rightVal := nums[right]
+// 		if leftVal < rightVal {
+// 			if midVal > target {
+// 				right = mid - 1
+// 			} else {
+// 				left = mid + 1
+// 			}
+// 		} else if midVal >= leftVal {
+// 			if midVal > target && target >= leftVal {
+// 				right = mid - 1
+// 			} else {
+// 				left = mid + 1
+// 			}
+// 		} else {
+// 			if midVal < target && target <= rightVal {
+// 				left = mid + 1
+// 			} else {
+// 				right = mid - 1
+// 			}
+// 		}
+// 	}
+
+// 	if nums[left] == target {
+// 		return left
+// 	}
+// 	return -1
+// }
