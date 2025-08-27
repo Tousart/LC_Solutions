@@ -15,7 +15,7 @@ func longestCommonPrefix(strs []string) string {
 		for j := 0; j < end; j++ {
 			if prefix[j] != word[j] {
 				end = j
-				if end < 0 {
+				if end == 0 {
 					return ""
 				}
 			}
@@ -29,3 +29,4 @@ func main() {
 	strs := []string{"flower", "flow", "flight"}
 	fmt.Println(longestCommonPrefix(strs))
 }
+
