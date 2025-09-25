@@ -5,21 +5,16 @@ import (
 )
 
 func minimumTotal(triangle [][]int) int {
-	dp := make([]int, len(triangle[len(triangle)-1]))
-	copy(dp, triangle[len(triangle)-1])
 	for i := len(triangle) - 2; i >= 0; i-- {
 		for j := range len(triangle[i]) {
-			dp[j] = triangle[i][j] + min(dp[j], dp[j+1])
+			if triangle[i+1][j+1] < triangle[i+1][j] {
+				triangle[i][j] += triangle[i+1][j+1]
+			} else {
+				triangle[i][j] += triangle[i+1][j]
+			}
 		}
 	}
-	return dp[0]
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
+	return triangle[0][0]
 }
 
 func main() {
