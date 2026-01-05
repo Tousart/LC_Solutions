@@ -3,7 +3,8 @@ package main
 import "fmt"
 
 func longestSubarray(nums []int) int {
-	i, j, k := 0, 0, 1
+	k := 1
+	i, j := 0, 0
 
 	for j < len(nums) {
 		if nums[j] == 0 {
@@ -23,6 +24,6 @@ func longestSubarray(nums []int) int {
 }
 
 func main() {
-	nums := []int{0, 1, 1, 1, 0, 1, 1, 0, 1}
+	nums := []int{1, 1, 0, 1}
 	fmt.Println(longestSubarray(nums))
 }

@@ -6,37 +6,43 @@ import (
 )
 
 func compress(chars []byte) int {
-	var (
-		i     int
-		j     int
-		count int = 1
-	)
+	i, j, count, idx := 0, 0, 0, 0
 
 	for j < len(chars) {
-		if j+1 == len(chars) || chars[j] != chars[j+1] {
-			chars[i] = chars[j]
+		if chars[i] == chars[j] {
+			count++
+			j++
+		} else {
+			chars[idx] = chars[i]
+			idx++
 
 			if count > 1 {
-				bytesCount := []byte(strconv.Itoa(count))
-				for _, val := range bytesCount {
-					i++
-					chars[i] = val
+				numStr := strconv.Itoa(count)
+				for _, numRune := range numStr {
+					chars[idx] = byte(numRune)
+					idx++
 				}
 			}
 
-			i++
-			count = 1
-		} else {
-			count++
+			i = j
+			count = 0
 		}
-		j++
 	}
 
-	return i
+	chars[idx] = chars[i]
+	idx++
+	if count > 1 {
+		numStr := strconv.Itoa(count)
+		for _, numRune := range numStr {
+			chars[idx] = byte(numRune)
+			idx++
+		}
+	}
+
+	return idx
 }
 
 func main() {
-	s := "abbccccdd"
-	chars := []byte(s)
+	chars := []byte("aabbccc")
 	fmt.Println(compress(chars))
 }

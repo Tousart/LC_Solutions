@@ -2,44 +2,47 @@ package main
 
 import (
 	"fmt"
-	"strings"
-	"unicode"
 )
 
 func isPalindrome(s string) bool {
-	var (
-		i int
-		j int = len(s) - 1
-	)
+	l, r := 0, len(s)-1
 
-	runesS := []rune(s)
-
-	for i <= j {
-		for i < j {
-			if unicode.IsLetter(runesS[i]) || unicode.IsDigit(runesS[i]) {
-				break
-			}
-			i++
+	for l < r {
+		if !normalSymbol(s[l]) {
+			l++
+			continue
 		}
 
-		for j > i {
-			if unicode.IsLetter(runesS[j]) || unicode.IsDigit(runesS[j]) {
-				break
-			}
-			j--
+		if !normalSymbol(s[r]) {
+			r--
+			continue
 		}
 
-		if !strings.EqualFold(strings.ToLower(string(s[i])), strings.ToLower(string(s[j]))) {
+		if getSymbol(s[l]) != getSymbol(s[r]) {
 			return false
 		}
-		i++
-		j--
+
+		l++
+		r--
 	}
 
 	return true
 }
 
+func normalSymbol(symbol byte) bool {
+	return (symbol >= 'a' && symbol <= 'z') ||
+		(symbol >= 'A' && symbol <= 'Z') ||
+		(symbol >= '0' && symbol <= '9')
+}
+
+func getSymbol(symbol byte) byte {
+	if symbol >= 'A' && symbol <= 'Z' {
+		return symbol + ('Z' - 'A') + ('a' - 'Z')
+	}
+	return symbol
+}
+
 func main() {
-	s := "A man, a plan, a canal: Panama"
+	s := "1b1"
 	fmt.Println(isPalindrome(s))
 }
