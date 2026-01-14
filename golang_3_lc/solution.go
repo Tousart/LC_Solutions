@@ -3,28 +3,21 @@ package main
 import "fmt"
 
 func lengthOfLongestSubstring(s string) int {
-	inds := make(map[rune]int)
-	j, length := 0, 0
+	letIdxs := make(map[rune]int)
+	idx, res := 0, 0
 
-	for i, val := range s {
-		if ind, ok := inds[val]; ok && ind >= j {
-			length = maximum(length, i-j)
-			j = ind + 1
+	for i, letter := range s {
+		if letIdx, ok := letIdxs[letter]; ok && idx <= letIdx {
+			res = max(res, i-idx)
+			idx = letIdx + 1
 		}
-		inds[val] = i
+		letIdxs[letter] = i
 	}
 
-	return maximum(length, len(s)-j)
-}
-
-func maximum(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+	return max(res, len(s)-idx)
 }
 
 func main() {
-	s := "abba"
+	s := "abcabcbb"
 	fmt.Println(lengthOfLongestSubstring(s))
 }

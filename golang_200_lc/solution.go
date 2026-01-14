@@ -1,70 +1,66 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func numIslands(grid [][]byte) int {
-	var (
-		count int
-	)
+	var res int
 
-	for i := 0; i < len(grid); i++ {
-		for j := 0; j < len(grid[0]); j++ {
-			if grid[i][j] == '1' {
-				count++
-				bfs(i, j, grid)
-				//dfs(i, j, grid)
+	for row := range grid {
+		for col := range grid[0] {
+			if grid[row][col] == '1' {
+				res++
+				// bfs(grid, row, col)
+				dfs(grid, row, col)
 			}
 		}
 	}
 
-	return count
+	return res
 }
 
-func dfs(n, m int, grid [][]byte) {
-	if n == len(grid) || n < 0 || m == len(grid[0]) || m < 0 || grid[n][m] != '1' {
+func dfs(grid [][]byte, row, col int) {
+	if (row >= 0 && row < len(grid)) &&
+		(col >= 0 && col < len(grid[0])) &&
+		(grid[row][col] == '1') {
+		grid[row][col] = '2'
+	} else {
 		return
 	}
 
-	grid[n][m] = '2'
-	dfs(n+1, m, grid)
-	dfs(n-1, m, grid)
-	dfs(n, m+1, grid)
-	dfs(n, m-1, grid)
+	dfs(grid, row+1, col)
+	dfs(grid, row-1, col)
+	dfs(grid, row, col+1)
+	dfs(grid, row, col-1)
 }
 
-func bfs(n, m int, grid [][]byte) {
-	q := [][2]int{{n, m}}
-	offsets := [4][2]int{
-		{1, 0},
-		{-1, 0},
-		{0, 1},
-		{0, -1},
-	}
+func bfs(grid [][]byte, row, col int) {
+	coords := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+	queue := [][]int{{row, col}}
+	grid[row][col] = '2'
 
-	grid[n][m] = '2'
-	for len(q) > 0 {
-		current := q[0]
-		q = q[1:]
-		for _, offset := range offsets {
-			row := current[0] + offset[0]
-			col := current[1] + offset[1]
+	for len(queue) > 0 {
+		x, y := queue[0][0], queue[0][1]
+		queue = queue[1:]
 
-			if row == len(grid) || row < 0 || col == len(grid[0]) || col < 0 || grid[row][col] != '1' {
-				continue
+		for _, coord := range coords {
+			newX := x + coord[0]
+			newY := y + coord[1]
+			if newX >= 0 && newX < len(grid) && newY >= 0 && newY < len(grid[0]) {
+				if grid[newX][newY] == '1' {
+					queue = append(queue, []int{newX, newY})
+					grid[newX][newY] = '2'
+				}
 			}
-
-			q = append(q, [2]int{row, col})
-			grid[row][col] = '2'
 		}
 	}
 }
 
 func main() {
 	grid := [][]byte{
-		[]byte("1111"),
-		[]byte("1111"),
+		[]byte("11110"),
+		[]byte("11010"),
+		[]byte("11000"),
+		[]byte("00000"),
 	}
 	fmt.Println(numIslands(grid))
 }

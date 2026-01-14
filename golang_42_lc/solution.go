@@ -3,36 +3,26 @@ package main
 import "fmt"
 
 func trap(height []int) int {
-	i, j := 1, len(height)-2
-	left, right := height[0], height[len(height)-1]
-	res := 0
-	for i <= j {
-		if height[i] > left {
-			left = height[i]
-			i++
-			continue
+	var (
+		level int
+		res   int
+		l     int
+		r     int = len(height) - 1
+	)
+
+	for (l + 1) < r {
+		minHigh := min(height[l], height[r])
+		if minHigh > level {
+			res += (minHigh - level) * (r - l - 1)
+			level = minHigh
 		}
 
-		if height[j] > right {
-			right = height[j]
-			j--
-			continue
-		}
-
-		if left == right {
-			if i != j {
-				res += (left - height[i]) + (right - height[j])
-			} else {
-				res += left - height[i]
-			}
-			i++
-			j--
-		} else if left < right {
-			res += left - height[i]
-			i++
+		if height[l] < height[r] {
+			l++
+			res -= min(level, height[l])
 		} else {
-			res += right - height[j]
-			j--
+			r--
+			res -= min(level, height[r])
 		}
 	}
 
@@ -40,6 +30,6 @@ func trap(height []int) int {
 }
 
 func main() {
-	height := []int{2, 0, 2}
+	height := []int{4, 2, 3}
 	fmt.Println(trap(height))
 }
