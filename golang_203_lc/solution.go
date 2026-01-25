@@ -7,14 +7,18 @@ type ListNode struct {
 	Next *ListNode
 }
 
-func deleteDuplicates(head *ListNode) *ListNode {
+func removeElements(head *ListNode, val int) *ListNode {
+	for head != nil && head.Val == val {
+		head = head.Next
+	}
+
 	if head == nil {
-		return head
+		return nil
 	}
 
 	curr := head
 	for curr.Next != nil {
-		if curr.Val == curr.Next.Val {
+		if curr.Next.Val == val {
 			curr.Next = curr.Next.Next
 		} else {
 			curr = curr.Next
@@ -26,7 +30,6 @@ func deleteDuplicates(head *ListNode) *ListNode {
 
 func main() {
 	head := &ListNode{Val: 1}
-	head.Next = &ListNode{Val: 1}
-	head.Next.Next = &ListNode{Val: 2}
-	fmt.Println(deleteDuplicates(head))
+	val := 1
+	fmt.Println(removeElements(head, val))
 }
